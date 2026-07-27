@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -31,10 +31,25 @@ ALLOWED_AUDIO_EXTENSIONS = {".wav", ".mp3", ".flac", ".m4a", ".ogg", ".webm"}
 MAX_REFERENCE_BYTES = 50 * 1024 * 1024
 
 
+whisper_model = None
+WHISPER_MODEL_SIZE = os.environ.get("WHISPER_MODEL_SIZE", "small")
+transcription_tasks = {}
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     ensure_directories()
     initialize_database()
+    global whisper_model
+    try:
+        from faster_whisper import WhisperModel
+        print(f"Loading faster-whisper model '{WHISPER_MODEL_SIZE}'...")
+        whisper_model = WhisperModel(WHISPER_MODEL_SIZE, device="cuda", compute_type="float16")
+        print("Whisper model loaded successfully on CUDA!")
+    except Exception as e:
+        print(f"Failed to load Whisper on CUDA: {e}. Falling back to CPU...")
+        from faster_whisper import WhisperModel
+        whisper_model = WhisperModel(WHISPER_MODEL_SIZE, device="cpu", compute_type="int8")
+        print("Whisper model loaded successfully on CPU!")
     yield
 
 
@@ -925,3 +940,123 @@ async def extract_document(file: UploadFile = File(...)):
             
     else:
         raise HTTPException(status_code=422, detail="Chỉ hỗ trợ tài liệu định dạng PDF hoặc EPUB.")
+
+
+class TranscribeResponse(BaseModel):
+    task_id: str
+    message: str
+
+
+class TaskStatusResponse(BaseModel):
+    status: str
+    srt: str | None = None
+    srt_file: str | None = None
+    language: str | None = None
+    error: str | None = None
+
+
+def format_timestamp(seconds: float) -> str:
+    import datetime
+    td = datetime.timedelta(seconds=seconds)
+    hours, remainder = divmod(td.seconds, 3600)
+    minutes, seconds_int = divmod(remainder, 60)
+    milliseconds = int(td.microseconds / 1000)
+    return f"{hours:02d}:{minutes:02d}:{seconds_int:02d},{milliseconds:03d}"
+
+
+def process_transcription(task_id: str, temp_path: str, filename: str):
+    try:
+        transcription_tasks[task_id]["status"] = "processing"
+        print(f"Task {task_id}: Transcribing {filename}...")
+        
+        segments, info = whisper_model.transcribe(temp_path, beam_size=5)
+        
+        srt_content = ""
+        for i, segment in enumerate(segments, start=1):
+            start_time = format_timestamp(segment.start)
+            end_time = format_timestamp(segment.end)
+            text = segment.text.strip()
+            
+            srt_content += f"{i}\n"
+            srt_content += f"{start_time} --> {end_time}\n"
+            srt_content += f"{text}\n\n"
+            
+        import os
+        base_name = os.path.splitext(filename)[0]
+        srt_filename = f"{base_name}_{task_id}.srt"
+        srt_path = OUTPUTS_DIR / srt_filename
+        
+        with open(srt_path, "w", encoding="utf-8") as f:
+            f.write(srt_content)
+            
+        transcription_tasks[task_id]["status"] = "completed"
+        transcription_tasks[task_id]["srt"] = srt_content
+        transcription_tasks[task_id]["srt_file"] = str(srt_path)
+        transcription_tasks[task_id]["language"] = info.language
+        print(f"Task {task_id}: Completed. SRT saved to {srt_path}")
+        
+    except Exception as e:
+        print(f"Task {task_id}: Error - {e}")
+        transcription_tasks[task_id]["status"] = "error"
+        transcription_tasks[task_id]["error"] = str(e)
+    finally:
+        import os
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+
+@app.post("/transcribe", response_model=TranscribeResponse)
+async def transcribe(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    import uuid
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No file uploaded")
+    
+    ext = Path(file.filename).suffix.lower()
+    
+    temp_file = TEMP_DIR / f"{uuid.uuid4().hex}{ext}"
+    content = await file.read()
+    with open(temp_file, "wb") as f:
+        f.write(content)
+    
+    task_id = uuid.uuid4().hex
+    transcription_tasks[task_id] = {
+        "status": "queued",
+        "srt": None,
+        "srt_file": None,
+        "language": None,
+        "error": None
+    }
+    
+    background_tasks.add_task(process_transcription, task_id, str(temp_file), file.filename)
+    
+    return TranscribeResponse(
+        task_id=task_id, 
+        message="Transcription task queued. Check status using /status/{task_id}"
+    )
+
+
+@app.get("/status/{task_id}", response_model=TaskStatusResponse)
+def get_status(task_id: str):
+    if task_id not in transcription_tasks:
+        raise HTTPException(status_code=404, detail="Task not found")
+    
+    return TaskStatusResponse(
+        status=transcription_tasks[task_id]["status"],
+        srt=transcription_tasks[task_id]["srt"],
+        srt_file=transcription_tasks[task_id]["srt_file"],
+        language=transcription_tasks[task_id]["language"],
+        error=transcription_tasks[task_id]["error"]
+    )
+
+
+@app.get("/download/{task_id}")
+def download_srt(task_id: str):
+    import os
+    if task_id not in transcription_tasks:
+        raise HTTPException(status_code=404, detail="Task not found")
+    
+    srt_file = transcription_tasks[task_id].get("srt_file")
+    if not srt_file or not os.path.exists(srt_file):
+        raise HTTPException(status_code=404, detail="SRT file not available")
+        
+    return FileResponse(srt_file, media_type='text/plain', filename=os.path.basename(srt_file))
