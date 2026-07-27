@@ -32,7 +32,7 @@ MAX_REFERENCE_BYTES = 50 * 1024 * 1024
 
 
 whisper_model = None
-WHISPER_MODEL_SIZE = os.environ.get("WHISPER_MODEL_SIZE", "large-v3")
+WHISPER_MODEL_SIZE = os.environ.get("WHISPER_MODEL_SIZE", "turbo")
 transcription_tasks = {}
 
 @asynccontextmanager
