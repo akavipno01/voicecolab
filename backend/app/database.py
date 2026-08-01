@@ -115,11 +115,6 @@ def initialize_system_voices() -> None:
     )
 
     system_voices = [
-        {"id": "sys_tutrinh", "name": "Tú Trinh", "filename": "tutrinh.wav", "ref_text": "", "language": "Vietnamese", "notes": "Giọng hệ thống", "created_offset": 0},
-        {"id": "sys_saigon1", "name": "Sài Gòn 1", "filename": "saigon1.wav", "ref_text": "", "language": "Vietnamese", "notes": "Giọng hệ thống", "created_offset": 1},
-        {"id": "sys_saigon2", "name": "Sài Gòn 2", "filename": "saigon2.wav", "ref_text": "", "language": "Vietnamese", "notes": "Giọng hệ thống", "created_offset": 2},
-        {"id": "sys_saigon3", "name": "Sài Gòn 3", "filename": "saigon3.wav", "ref_text": "", "language": "Vietnamese", "notes": "Giọng hệ thống", "created_offset": 3},
-        {"id": "sys_saigon4", "name": "Sài Gòn 4", "filename": "saigon4.wav", "ref_text": "", "language": "Vietnamese", "notes": "Giọng hệ thống", "created_offset": 4},
         {"id": "sys_achernar", "name": "Achernar", "filename": "Achernar.wav", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 5},
         {"id": "sys_achird", "name": "Achird", "filename": "Achird.wav", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 6},
         {"id": "sys_algenib", "name": "Algenib", "filename": "Algenib.wav", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 7},
