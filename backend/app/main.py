@@ -56,8 +56,8 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title=APP_NAME, version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5173", "http://localhost:5173", "file://"],
-    allow_credentials=False,
+    allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["X-Audio-Id", "X-Seed", "X-Generation-Time", "X-Audio-Duration", "X-Audio-Format", "X-Audio-Srt"],
