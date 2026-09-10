@@ -277,6 +277,26 @@ def initialize_system_voices() -> None:
         {"id": "sys_vindemiatrix_japanese", "name": "Vindemiatrix_Japanese", "filename": "Vindemiatrix_Japanese.wav", "ref_text": DEFAULT_JA_REF_TEXT, "language": "jp", "notes": "Giọng hệ thống", "created_offset": 152},
         {"id": "sys_zephyr_japanese", "name": "Zephyr_Japanese", "filename": "Zephyr_Japanese.wav", "ref_text": DEFAULT_JA_REF_TEXT, "language": "jp", "notes": "Giọng hệ thống", "created_offset": 153},
         {"id": "sys_zubenelgenubi_japanese", "name": "Zubenelgenubi_Japanese", "filename": "Zubenelgenubi_Japanese.wav", "ref_text": DEFAULT_JA_REF_TEXT, "language": "jp", "notes": "Giọng hệ thống", "created_offset": 154},
+        {"id": "sys_elevenlabs_annakim", "name": "ElevenLabs_AnnaKim", "filename": "ElevenLabs_AnnaKim.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 174},
+        {"id": "sys_elevenlabs_borungzahwang", "name": "ElevenLabs_BorungzaHwang", "filename": "ElevenLabs_BorungzaHwang.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 173},
+        {"id": "sys_elevenlabs_chungman", "name": "ElevenLabs_Chungman", "filename": "ElevenLabs_Chungman.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 172},
+        {"id": "sys_elevenlabs_emilyseoul", "name": "ElevenLabs_EmilySeoul", "filename": "ElevenLabs_EmilySeoul.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 171},
+        {"id": "sys_elevenlabs_haemi", "name": "ElevenLabs_Haemi", "filename": "ElevenLabs_Haemi.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 170},
+        {"id": "sys_elevenlabs_jaeuk", "name": "ElevenLabs_Jaeuk", "filename": "ElevenLabs_Jaeuk.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 169},
+        {"id": "sys_elevenlabs_jaylee", "name": "ElevenLabs_JayLee", "filename": "ElevenLabs_JayLee.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 168},
+        {"id": "sys_elevenlabs_jingeonsong", "name": "ElevenLabs_JinGeonSong", "filename": "ElevenLabs_JinGeonSong.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 167},
+        {"id": "sys_elevenlabs_juwonmom", "name": "ElevenLabs_Juwonmom", "filename": "ElevenLabs_Juwonmom.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 166},
+        {"id": "sys_elevenlabs_kim", "name": "ElevenLabs_Kim", "filename": "ElevenLabs_Kim.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 165},
+        {"id": "sys_elevenlabs_mr_k", "name": "ElevenLabs_Mr. K", "filename": "ElevenLabs_Mr. K.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 164},
+        {"id": "sys_elevenlabs_namchun", "name": "ElevenLabs_Namchun", "filename": "ElevenLabs_Namchun.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 163},
+        {"id": "sys_elevenlabs_nara", "name": "ElevenLabs_Nara", "filename": "ElevenLabs_Nara.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 162},
+        {"id": "sys_elevenlabs_seongminyoo", "name": "ElevenLabs_SeongminYoo", "filename": "ElevenLabs_SeongminYoo.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 161},
+        {"id": "sys_elevenlabs_sian", "name": "ElevenLabs_Sian", "filename": "ElevenLabs_Sian.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 160},
+        {"id": "sys_elevenlabs_taehyung", "name": "ElevenLabs_Taehyung", "filename": "ElevenLabs_Taehyung.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 159},
+        {"id": "sys_elevenlabs_taemin", "name": "ElevenLabs_Taemin", "filename": "ElevenLabs_Taemin.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 158},
+        {"id": "sys_elevenlabs_theo", "name": "ElevenLabs_Theo", "filename": "ElevenLabs_Theo.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 157},
+        {"id": "sys_elevenlabs_xunzi", "name": "ElevenLabs_Xunzi", "filename": "ElevenLabs_Xunzi.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 156},
+        {"id": "sys_elevenlabs_yohankoo", "name": "ElevenLabs_YohanKoo", "filename": "ElevenLabs_YohanKoo.mp3", "ref_text": DEFAULT_KO_REF_TEXT, "language": "ko", "notes": "Giọng hệ thống", "created_offset": 155},
     ]
 
     # Ensure VOICES_DIR exists
@@ -296,6 +316,12 @@ def initialize_system_voices() -> None:
                     shutil.copy2(src_path, dst_path)
                 except Exception as e:
                     print(f"Error copying system voice file {v['filename']}: {e}")
+            elif dst_path.exists() and not src_path.exists():
+                try:
+                    shutil.copy2(dst_path, src_path)
+                except Exception as e:
+                    print(f"Error copying system voice file {v['filename']} to packaged: {e}")
+
                     
             # Check if database entry already exists
             row = connection.execute(
